@@ -38,3 +38,21 @@ Achievements and Conclusion :-
   -- Developing an ETL Pipeline that copies data from S3 buckets into staging tables to be processed into a star schema
   -- Using Airflow to automate ETL pipelines using Airflow, Python, Amazon Redshift.
   -- Validation through data quality checks.
+
+
+Challenges and Scenarios to Consider:
+ <1> Data is 100x:
+     - Input data should be stoted in cloud storage e.g. AWS S3, Microsoft Azure, GCP
+     - Clustered Spark should be used to enable parallel processing of the data.
+     - Clustered Cloud DB e.g. AWS Redshift should be used to store the data during the processing (staging and final tables).
+     - Output data (parquet files) should be stored to Cloud storage for easy access or to a Cloud DB for further analysis. 
+     - AWS RDS should be used to save some costs.
+
+ <2> Data is used in dashboard and updated every day 07:00AM:
+     -ETL script should be refactored to process only the changed inout information instead of processing all the inout files as it does       now to minimise the used time and shared resources.
+     -Output data should be stored and updated in a Cloud DB to make it available all times for the dashboard.
+     -Possibly this "always available" DB (serving the dashboard) would contain a latest sub-set of all available data to make it fast         perfoming and easier to manage.
+     
+ <3> DB is accessed by 100+ people:
+     -Output data should be stored in a Cloud DB (e.g. AWS RDS) to make it "always available" for further analysis. 
+     -Tools should be provided for the end-users to access the output DB.
